@@ -1,8 +1,8 @@
 .data 
-    var: .word 5, 9 , 32
+    var: .word 9, 5
 
-      Celcius: .asciiz "Enter Temperature In Celcius: "
-      Faheriniet: .asciiz "The Temperature in Faherimiet: "
+    Celcius: .asciiz "Enter Temperature In Celcius: "
+    Faheriniet: .asciiz "The Temperature in Faherimiet: "
 
 .text
 .globl main
@@ -23,24 +23,25 @@ main:
     la $t0,var
 
     lw $t2 ,0($t0)
-    lw $t3,4($t0)
+    mult $t1,$t2
+    mflo $t3
 
-    div $t2,$t3
-    mflo $t4
-    addi $t4,$t4,2
+    
+    
+    
+    lw $t4,4($t0)
+    addi $t3,$t3,2
+    div $t3,$t4
+    mflo $t5
 
-    add $t5   
-    # mul $t5,$t1, $t4			
-    # mflo	$t5					
-
-    # mul $t6,$t5,32
-
+    addi $t5,$t5,32
+    
     li $v0,4
     la $a0,Faheriniet
     syscall
 
     li $v0,1
-    move $a0,$t6
+    move $a0,$t5
     syscall
 
     li $v0,10
