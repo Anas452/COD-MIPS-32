@@ -2,7 +2,9 @@
     var: .word 30, 20
     Temperature: .asciiz "Enter Temperature of th  day: "
     input: .asciiz "Temperature is : "
-    hotts: .asciiz "it is hot "
+    hot: .asciiz "\nit is hot "
+    pleasant: .asciiz "\nIts pleasent tody"
+    cold: .asciiz "\nIts cold today"
    
 
 .text
@@ -29,22 +31,46 @@ main:
     syscall
 
     la $s0,var
+    
     lw $s1,0($s0)
+    lw $s2,4($s0)
     
-    slt $t1,$s0,$t0
-    bne $t1,$0,hot
-    j		out				
+    slt $t1,$s1,$t0
+    bne $t1,$0,Hot
+    j next				
 
     
     
 
-hot: 
+Hot: 
     li $v0,4
-    la $a0,hotts
+    la $a0,hot
     syscall
+    jr $ra
 
-out1:
+next:
     slt $t2,$t0,$s1
+    bne $t2,$0, label
+    label: slt $t3,$s2,$t0
+    bne $t3,$0,PLEASANT
+    j next2
+
+PLEASANT:
+    li $v0,4
+    la $a0,pleasant
+    syscall
+    jr $ra
+
+next2:
+    slt $t4, $s2,$t0
+    beq $t4,$0,COLD
+
+COLD:
+    li $v0,4
+    la $a0, cold
+    syscall
+    jr $ra
+
     
 
     li $v0,10
